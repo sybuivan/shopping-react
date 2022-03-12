@@ -4,9 +4,12 @@ import {Controller} from 'react-hook-form'
 import { TextField } from '@mui/material'
 
 function InputField(props) {
-  const {form, label, name } = props
+  const {form, label, name} = props
+  const  {formState: { errors } } = form
+  // const { touchedFields } = formState;
+  // formState.touched[name] && errors[name]
+  const hasError = errors[name]
 
-  console.log('Label input ', label);
   return (
     <Controller
       name={name}
@@ -21,6 +24,8 @@ function InputField(props) {
           onChange={onChange}
           onBlur={onBlur}
           selected={value}
+          error={!!hasError}
+          helperText={errors[name]?.message}
         />)}
     />
   )

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import RegisterForm from '../RegisterForm'
 
 function Register(props) {
-  const handleOnSubmit = () => {
+  const handleOnSubmit = (values) => {
     
+    console.log("form values", values);
   }
   return (
     <div>
