@@ -4,8 +4,7 @@ import {Controller} from 'react-hook-form'
 import { TextField } from '@mui/material'
 
 function InputField(props) {
-  const {form, label, name} = props
-  const  {formState: { errors } } = form
+  const {label, name, errors, control} = props
   // const { touchedFields } = formState;
   // formState.touched[name] && errors[name]
   const hasError = errors[name]
@@ -13,7 +12,7 @@ function InputField(props) {
   return (
     <Controller
       name={name}
-      control={form.control}
+      control={control}
       width="100%"
       render={({ field: { onChange, onBlur, value, ref } }) => (
         <TextField

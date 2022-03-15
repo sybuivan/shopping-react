@@ -10,8 +10,7 @@ import React, { useState } from "react";
 import { Controller } from "react-hook-form";
 
 function PasswordField(props) {
-  const { label, name, form } = props;
-  const  {formState: { errors } } = form
+  const { label, name, form ,errors, control} = props;
 
   const hasError = errors[name]
   // console.log('Has error', hasError);
@@ -26,7 +25,7 @@ function PasswordField(props) {
       <Controller
         id={name}
         name={name}
-        control={form.control}
+        control={control}
         render={({ field: { onChange, onBlur, value, ref } }) => (
           <OutlinedInput
             type={showPassword ? "text" : "password"}

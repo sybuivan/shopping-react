@@ -1,5 +1,11 @@
 import LockIcon from "@mui/icons-material/Lock";
-import { Avatar, Grid, Typography, Button } from "@mui/material";
+import {
+  Avatar,
+  Grid,
+  Typography,
+  Button,
+  LinearProgress,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import PropTypes from "prop-types";
 import React from "react";
@@ -12,6 +18,7 @@ import PasswordField from "../../../../form-control/PasswordField";
 const useStyles = makeStyles({
   root: {
     paddingTop: "10px",
+    position: "relative",
   },
 
   avatar: {
@@ -27,6 +34,12 @@ const useStyles = makeStyles({
   submit: {
     padding: "8px",
   },
+  progress: {
+    position: "absolute",
+    top: '-5px',
+    left: 0,
+    right: 0
+  }
 });
 
 function RegisterForm(props) {
@@ -50,7 +63,7 @@ function RegisterForm(props) {
       .required("Please enter your email.")
       .email("Please enter a valid your address email"),
 
-    passWord: yup
+    password: yup
       .string()
       .required("Please enter your password")
       .min(6, "Please enter at least 6 characters")
@@ -59,45 +72,41 @@ function RegisterForm(props) {
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
 
-    retypePassWord: yup.string().required("Please retype your retypePassWord").oneOf([yup.ref('passWord')], "Password does not match")
-              
+    retypePassWord: yup
+      .string()
+      .required("Please retype your retypePassWord")
+      .oneOf([yup.ref("password")], "Password does not match"),
   });
 
-  const form = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting, errors },
+  } = useForm({
     defaultValues: {
       fullName: "",
       email: "",
-      passWord: "",
+      password: "",
       retypePassWord: "",
     },
     resolver: yupResolver(schema),
   });
 
-  // const {isSubmitting} = useFormState()
+  console.log("Is submitting", isSubmitting);
 
-  const handleSubmit = (values, e) => {
-    const {onSubmit} = props;
+  const handleOnSubmit = async (values, e) => {
+    const { onSubmit } = props;
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(onSubmit) {
-          onSubmit(values)
-          
-          // console.log("isSubmitting", isSubmitting);
-          e.target.reset();
-        }
+    if (onSubmit) {
+      await onSubmit(values);
 
-        resolve(true)
-
-      }, 2000)
-    })
-
-    // console.log();
-    
+      // console.log("isSubmitting", isSubmitting);
+    }
   };
 
   return (
     <div className={classes.root}>
+      {isSubmitting && <LinearProgress className={classes.progress} />}
       <Avatar className={classes.avatar}>
         <LockIcon />
       </Avatar>
@@ -106,20 +115,26 @@ function RegisterForm(props) {
         Create a account
       </Typography>
 
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={handleSubmit(handleOnSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <InputField form={form} name="fullName" label="Full Name" />
+            <InputField
+              errors={errors}
+              control={control}
+              name="fullName"
+              label="Full Name"
+            />
           </Grid>
           <Grid item xs={12}>
-            <InputField form={form} name="email" label="Email" />
+            <InputField errors={errors} control={control} name="email" label="Email" />
           </Grid>
           <Grid item xs={12}>
-            <PasswordField form={form} name="passWord" label="Password" />
+            <PasswordField errors={errors} control={control} name="password" label="Password" />
           </Grid>
           <Grid item xs={12}>
             <PasswordField
-              form={form}
+              errors={errors}
+              control={control}
               name="retypePassWord"
               label="Retype Password"
             />
@@ -130,6 +145,7 @@ function RegisterForm(props) {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isSubmitting}
               className={classes.submit}
             >
               Register

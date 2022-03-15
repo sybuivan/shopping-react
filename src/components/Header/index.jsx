@@ -50,7 +50,7 @@ export default function Header() {
         onBackdropClick
       >
         <DialogContent>
-          <Register />
+          <Register closeDialog={handleClose}/>
         </DialogContent>
 
         <DialogActions>
