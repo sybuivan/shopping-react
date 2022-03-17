@@ -36,46 +36,21 @@ const useStyles = makeStyles({
   },
   progress: {
     position: "absolute",
-    top: '-5px',
+    top: "-5px",
     left: 0,
-    right: 0
-  }
+    right: 0,
+  },
 });
 
-function RegisterForm(props) {
+function LoginForm(props) {
   const classes = useStyles();
 
   const schema = yup.object().shape({
-    fullName: yup
-      .string()
-      .required("Please enter fullName")
-      .test(
-        "Should has at least two words",
-        "Please enter at least two words",
-        (value) => {
-          console.log("Value full name", value);
-          return value.split(" ").length >= 2;
-        }
-      ),
-
-    email: yup
+    identifier: yup
       .string()
       .required("Please enter your email.")
       .email("Please enter a valid your address email"),
-
-    password: yup
-      .string()
-      .required("Please enter your password")
-      .min(6, "Please enter at least 6 characters")
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-      ),
-
-    retypePassWord: yup
-      .string()
-      .required("Please retype your retypePassWord")
-      .oneOf([yup.ref("password")], "Password does not match"),
+    password: yup.string().required("Please enter your password"),
   });
 
   const {
@@ -84,10 +59,8 @@ function RegisterForm(props) {
     formState: { isSubmitting, errors },
   } = useForm({
     defaultValues: {
-      fullName: "",
-      email: "",
+      identifier: "",
       password: "",
-      retypePassWord: "",
     },
     resolver: yupResolver(schema),
   });
@@ -112,7 +85,7 @@ function RegisterForm(props) {
       </Avatar>
 
       <Typography component="h2" variant="h5" className={classes.title}>
-        Create a account
+        Login a account
       </Typography>
 
       <form onSubmit={handleSubmit(handleOnSubmit)}>
@@ -121,22 +94,16 @@ function RegisterForm(props) {
             <InputField
               errors={errors}
               control={control}
-              name="fullName"
-              label="Full Name"
+              name="identifier"
+              label="Email"
             />
-          </Grid>
-          <Grid item xs={12}>
-            <InputField errors={errors} control={control} name="email" label="Email" />
-          </Grid>
-          <Grid item xs={12}>
-            <PasswordField errors={errors} control={control} name="password" label="Password" />
           </Grid>
           <Grid item xs={12}>
             <PasswordField
               errors={errors}
               control={control}
-              name="retypePassWord"
-              label="Retype Password"
+              name="password"
+              label="Password"
             />
           </Grid>
 
@@ -148,7 +115,7 @@ function RegisterForm(props) {
               disabled={isSubmitting}
               className={classes.submit}
             >
-              Register
+              Sign in
             </Button>
           </Grid>
         </Grid>
@@ -157,8 +124,8 @@ function RegisterForm(props) {
   );
 }
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-export default RegisterForm;
+export default LoginForm;

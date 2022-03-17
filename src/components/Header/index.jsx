@@ -1,5 +1,7 @@
+import { Close } from "@mui/icons-material";
 import CodeIcon from "@mui/icons-material/Code";
 import MenuIcon from "@mui/icons-material/Menu";
+import { IconButton } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,11 +10,23 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
 import * as React from "react";
 import Register from "../../features/Auth/components/Register";
+import Login from "../../features/Auth/components/Login";
 
+const useStyles = makeStyles({
+  closeButton: {
+    position: "absolute!important",
+    top: "8px",
+    right: "8px",
+    color: "#c1c1c1",
+    zIndex: "1",
+  },
+});
 export default function Header() {
   const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,6 +35,7 @@ export default function Header() {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -45,17 +60,20 @@ export default function Header() {
 
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            return false
+          }
+        }}
         disableEscapeKeyDown
-        onBackdropClick
       >
+        <IconButton className={classes.closeButton} onClick={handleClose}>
+          <Close />
+        </IconButton>
         <DialogContent>
-          <Register closeDialog={handleClose}/>
+          {/* <Register closeDialog={handleClose} /> */}
+          <Login closeDialog={handleClose} />
         </DialogContent>
-
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
       </Dialog>
     </Box>
   );

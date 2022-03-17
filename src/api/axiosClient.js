@@ -22,7 +22,8 @@ axiosClient.interceptors.response.use(response => {
 
   
   const {data, config, status} = error.response
-  if(config.url === '/auth/local/register' && status === 400) {
+  const URLS = ['/auth/local/register', '/auth/local']
+  if(URLS.includes(config.url) && status === 400) {
     const errorList = data.data || []
     const firstError = errorList.length > 0 ? errorList[0] : {}
     const messageList = firstError.messages || []
