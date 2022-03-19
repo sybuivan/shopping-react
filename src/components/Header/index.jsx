@@ -3,7 +3,7 @@ import {
   Close,
   Logout,
   PersonAdd,
-  Settings,
+  Settings
 } from "@mui/icons-material";
 import CodeIcon from "@mui/icons-material/Code";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -13,23 +13,24 @@ import {
   IconButton,
   ListItemIcon,
   Menu,
-  MenuItem,
+  MenuItem
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import * as React from "react";
-import Register from "../../features/Auth/components/Register";
-import Login from "../../features/Auth/components/Login";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Login from "../../features/Auth/components/Login";
+import Register from "../../features/Auth/components/Register";
 import { logout } from "../../features/Auth/userSlice";
+
 
 const useStyles = makeStyles({
   closeButton: {
@@ -39,14 +40,23 @@ const useStyles = makeStyles({
     color: "#c1c1c1",
     zIndex: "1",
   },
+  navListItem: {
+    listStyle: 'none',
+  },
+  
+  navListItem_link: {
+    color: '#fff',
+    textDecoration: 'none',
+  }
 });
 
 const MODE = {
   LOGIN: "login",
   REGISTER: "register",
 };
+
 export default function Header() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.current);
 
   const isLogged = !!loggedInUser.id;
@@ -70,14 +80,14 @@ export default function Header() {
   const handleClickMenu = (e) => {
     setAnchorEl(e.currentTarget);
   };
-  
-  const handleCloseMenu =  () => {
-    setAnchorEl(null)
-  }
-  
-  const handleLogoutClick = ()=> {
-    dispatch(logout())
-  }
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogoutClick = () => {
+    dispatch(logout());
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -95,6 +105,14 @@ export default function Header() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Shopping
           </Typography>
+
+          <Box>
+            <ul className="nav-list">
+              <li className={classes.navListItem}>
+                <Link to="products" className={classes.navListItem_link}>Product</Link>
+              </li>
+            </ul>
+          </Box>
           {!isLogged && (
             <Button color="inherit" onClick={handleClickOpen}>
               Login
@@ -166,7 +184,7 @@ export default function Header() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleLogoutClick} >
+        <MenuItem onClick={handleLogoutClick}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
