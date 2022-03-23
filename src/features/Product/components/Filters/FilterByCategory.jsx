@@ -52,6 +52,7 @@ function FilterByCategory({ onChange }) {
     if (onChange) onChange(category.id);
   };
 
+  // console.log(categoryList);
   return (
     <div>
       {loading ? (

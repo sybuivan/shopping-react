@@ -4,7 +4,6 @@ import { Box } from '@mui/system'
 import { Grid, Skeleton } from '@mui/material'
 
 function SkeletonProductList({lenght}) {
-   console.log('lenght', lenght)
   return (
     <Box>
       <Grid container>

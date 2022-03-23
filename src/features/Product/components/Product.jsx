@@ -5,6 +5,16 @@ import { Skeleton, Typography } from "@mui/material";
 import { STATIC_HOST, THUMBNAIL_DEMO } from "../../../constants";
 import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles({
+  productItem: {
+    padding: '8px',
+    '&:hover': {
+      boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+    }
+  },
+  productImage: {
+    borderRadius: '5px'
+  },
+
   name: {
     textTransform: "none ",
     height: '42px'
@@ -17,7 +27,7 @@ function Product({ product }) {
     ? `${STATIC_HOST}${product.thumbnail?.url}`
     : THUMBNAIL_DEMO;
   return (
-    <Box>
+    <Box className={classes.productItem}>
       {/* <Skeleton variant="rect" width="100%" height={118}/> */}
       <Box spacing={1} minHeight="215px">
         <img
@@ -25,6 +35,7 @@ function Product({ product }) {
           alt={product.name}
           width="100%"
           height="200px"
+          className={classes.productImage}
         />
       </Box>
       <Typography variant="body2" className={classes.name}>

@@ -25,9 +25,9 @@ const useStyles = makeStyles({
   },
 
   boxedButton: {
-     display: 'flex',
-     justifyContent: "space-between",
-  }
+    display: "flex",
+    justifyContent: "space-between",
+  },
 });
 
 function FilterByPrice({ onChange }) {
@@ -41,15 +41,18 @@ function FilterByPrice({ onChange }) {
     console.log("values", values);
     //  neu thang cha co truyen onChange vao thi se goi onChange roi truyen object lên
     if (onChange) onChange(values);
-
-    setValues({});
+    setValues({
+      salePrice_gte: 0,
+      salePrice_lte: 0,
+    });
   };
 
   const handleOnChange = (e) => {
     if (RX_LIVE.test(e.target.value)) {
+      const { name, value } = e.target;
       setValues((prevValues) => ({
         ...prevValues,
-        [e.target.name]: e.target.value,
+        [name]: value,
       }));
     }
   };

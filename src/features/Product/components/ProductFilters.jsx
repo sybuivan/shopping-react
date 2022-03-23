@@ -1,10 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Box } from '@mui/material'
-import FilterByCategory from './Filters/FilterByCategory'
+import { Box } from '@mui/material';
 import { makeStyles } from "@mui/styles";
-import SkeletonFilters from './SkeletonFilters';
+import React from 'react';
+import FilterByCategory from './Filters/FilterByCategory';
 import FilterByPrice from './Filters/FilterByPrice';
+import FilterByService from './Filters/FilterByService';
 
 const useStyles = makeStyles({
   root: {
@@ -26,15 +25,21 @@ function ProductFilter({filters, onChange}) {
     onChange(newFilters)
   }
 
-  const handlePriceChange = (values) => {
+  const handleChange = (values) => {
+
     if(onChange) onChange(values)
+    console.log('value checked ', values)
   }
+
+
+  // console.log('Filter product filters', filters);
 
   return (
     <Box className={classes.root}>
       Danh mục sản phẩm
       <FilterByCategory onChange={handleCategoryChange}/>
-      <FilterByPrice onChange={handlePriceChange}/>
+      <FilterByPrice onChange={handleChange}/>
+      <FilterByService onChange={handleChange} filters={filters}/>
     </Box>
   )
 }

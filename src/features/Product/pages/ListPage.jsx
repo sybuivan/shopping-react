@@ -1,4 +1,11 @@
-import { Box, Container, Grid, Pagination, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Pagination,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import productApi from "../../../api/productApi";
@@ -6,7 +13,8 @@ import ProductFilters from "../components/ProductFilters";
 import ProductList from "../components/ProductList";
 import ProductSort from "../components/ProductSort";
 import SkeletonProductList from "../components/SkeletonProductList";
-import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
+import FilterViewer from "../components/FilterViewer";
 
 const useStyles = makeStyles({
   root: {},
@@ -25,26 +33,27 @@ const useStyles = makeStyles({
   },
 
   textWaring: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   boxedWarning: {
-    padding: '8px 12px',
-    border: '1px solid red',
-    marginTop: '20px'
+    padding: "8px 12px",
+    border: "1px solid red",
+    marginTop: "20px",
   },
 
   iconWarning: {
-    color: 'red',
-    marginRight: '12px'
-  }
+    color: "red",
+    marginRight: "12px",
+  },
 });
 
 function ListPage(props) {
   const classes = useStyles();
   const [productList, setProductList] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
   const [pagination, setPagination] = useState({
     limit: 10,
     total: 10,
@@ -57,7 +66,7 @@ function ListPage(props) {
     _sort: "salePrice:ASC",
   });
   // console.log('pagination', pagination);
-  console.log("loading: ", loading);
+  // console.log("loading: ", loading);
   useEffect(() => {
     try {
       (async () => {
@@ -65,6 +74,10 @@ function ListPage(props) {
         // console.log({ data, pagination });
         setPagination(pagination);
         setProductList(data.data);
+
+        // console.log(data.data);
+
+        setTotalPage(Math.ceil(pagination.total.data / pagination.limit));
 
         setLoading(false);
       })();
@@ -80,6 +93,7 @@ function ListPage(props) {
       ...preFilter,
       _page: page,
     }));
+    setLoading(true);
   };
 
   const handleOnChangeSort = (newSortValue) => {
@@ -87,6 +101,7 @@ function ListPage(props) {
       ...prevFilter,
       _sort: newSortValue,
     }));
+    setLoading(true);
   };
 
   const handleFilterChange = (newFilters) => {
@@ -94,9 +109,15 @@ function ListPage(props) {
       ...prevFilter,
       ...newFilters,
     }));
-
-    console.log("productList", productList);
+    setLoading(true);
+    // console.log("productList", productList);
   };
+
+  const setFiltersViewer = (newFilters) => {
+    setFilters(newFilters);
+    setLoading(true);
+  };
+
   return (
     <Box>
       <Container>
@@ -113,11 +134,18 @@ function ListPage(props) {
                 onChange={handleOnChangeSort}
               />
 
+              <FilterViewer
+                onChange={setFiltersViewer}
+                filters={filters}
+              />
+
               <Box>
                 {productList.length === 0 ? (
                   <Box className={classes.boxedWarning}>
                     <Typography className={classes.textWaring}>
-                      <ReportGmailerrorredIcon className={classes.iconWarning}/>
+                      <ReportGmailerrorredIcon
+                        className={classes.iconWarning}
+                      />
                       Rất tiếc, không tìm thấy sản phẩm phù hợp với lựa chọn của
                       bạn
                     </Typography>
@@ -134,7 +162,7 @@ function ListPage(props) {
               )}
 
               <Pagination
-                count={Math.ceil(pagination.total.data / pagination.limit)}
+                count={totalPage}
                 color="primary"
                 page={pagination.page}
                 className={classes.pagination}
