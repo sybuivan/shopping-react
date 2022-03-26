@@ -61,7 +61,7 @@ export default function Header() {
 
   const isLogged = !!loggedInUser.id;
 
-  console.log("isLogged", isLogged);
+  // console.log("isLogged", isLogged);
 
   const [open, setOpen] = React.useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
@@ -90,7 +90,7 @@ export default function Header() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} mb={1}>
       <AppBar position="static">
         <Toolbar>
           <CodeIcon

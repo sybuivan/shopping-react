@@ -28,7 +28,7 @@ function ProductFilter({filters, onChange}) {
   const handleChange = (values) => {
 
     if(onChange) onChange(values)
-    console.log('value checked ', values)
+    // console.log('value checked ', values)
   }
 
 

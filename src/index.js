@@ -9,6 +9,12 @@ import { SnackbarProvider } from "notistack";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductFeature from "./features/Product";
 import NotFound from "./components/NotFound";
+import ListPage from "./features/Product/pages/ListPage";
+import DetailProduct from "./features/Product/pages/DetailProduct";
+import ProductMenu from "./features/Product/components/ProductMenu";
+import ProductDesciption from "./features/Product/components/ProductDesciption";
+import ProductInformation from "./features/Product/components/ProductInformation";
+import ProductReview from "./features/Product/components/ProductReview";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,9 +26,9 @@ ReactDOM.render(
         >
           <Routes>
             <Route path="/" element={<App />}>
-              <Route index path="products" element={<ProductFeature />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="products/*" element={<ProductFeature />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </SnackbarProvider>
       </Provider>
