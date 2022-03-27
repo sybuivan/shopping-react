@@ -36,7 +36,7 @@ function CartFeature(props) {
       <Grid container>
         <Grid item className={classes.contentLeft} xs={8}>
           <Paper elevation={0} className={classes.contentTitle}>
-            <label htmlFor="">Tất cả 1 (sản phẩm)</label>
+            <label htmlFor="">Tất cả {cartItems.length} (sản phẩm)</label>
             <span>Đơn giá</span>
             <span>Số lượng</span>
             <span>Thành tiền</span>
