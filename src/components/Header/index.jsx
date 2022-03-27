@@ -3,17 +3,19 @@ import {
   Close,
   Logout,
   PersonAdd,
-  Settings
+  Settings,
 } from "@mui/icons-material";
 import CodeIcon from "@mui/icons-material/Code";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   Avatar,
+  Badge,
+  Container,
   Divider,
   IconButton,
   ListItemIcon,
   Menu,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -30,7 +32,10 @@ import { Link } from "react-router-dom";
 import Login from "../../features/Auth/components/Login";
 import Register from "../../features/Auth/components/Register";
 import { logout } from "../../features/Auth/userSlice";
-
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { cartItemCountSelector } from "../../features/Cart/selector";
+import { hiddenMiniCart } from "../../features/Cart/cartSlice";
+import NotistackCart from "../../features/Cart/components/NotistackCart";
 
 const useStyles = makeStyles({
   closeButton: {
@@ -40,14 +45,30 @@ const useStyles = makeStyles({
     color: "#c1c1c1",
     zIndex: "1",
   },
-  navListItem: {
-    listStyle: 'none',
+
+  navList: {
+    display: "flex",
+    alignItems: "center",
   },
-  
+
+  navListItem: {
+    listStyle: "none",
+    paddingLeft: "12px",
+  },
+
+  cartText: {
+    fontSize: "15px!important",
+  },
+
+  boxIconCart: {
+    display: "flex",
+    alignItems: "center",
+  },
+
   navListItem_link: {
-    color: '#fff',
-    textDecoration: 'none',
-  }
+    color: "#fff",
+    textDecoration: "none",
+  },
 });
 
 const MODE = {
@@ -58,10 +79,16 @@ const MODE = {
 export default function Header() {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.current);
+  const showCart = useSelector((state) => state.cart.showMiniCart);
+
+  if (showCart) {
+    setTimeout(() => {
+      dispatch(hiddenMiniCart());
+    }, 2000);
+  }
+  const countCart = useSelector(cartItemCountSelector);
 
   const isLogged = !!loggedInUser.id;
-
-  // console.log("isLogged", isLogged);
 
   const [open, setOpen] = React.useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
@@ -92,43 +119,62 @@ export default function Header() {
   return (
     <Box sx={{ flexGrow: 1 }} mb={1}>
       <AppBar position="static">
-        <Toolbar>
-          <CodeIcon
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </CodeIcon>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Shopping
-          </Typography>
-
-          <Box>
-            <ul className="nav-list">
-              <li className={classes.navListItem}>
-                <Link to="products" className={classes.navListItem_link}>Product</Link>
-              </li>
-            </ul>
-          </Box>
-          {!isLogged && (
-            <Button color="inherit" onClick={handleClickOpen}>
-              Login
-            </Button>
-          )}
-
-          {isLogged && (
-            <IconButton
+        <Container style={{padding: 0}}>
+          <Toolbar>
+            <CodeIcon
+              size="large"
+              edge="start"
               color="inherit"
-              title="Account settings"
-              onClick={handleClickMenu}
+              aria-label="menu"
+              sx={{ mr: 2 }}
             >
-              <AccountCircle />
-            </IconButton>
-          )}
-        </Toolbar>
+              <MenuIcon />
+            </CodeIcon>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Shopping
+            </Typography>
+
+            <Box>
+              <ul className={classes.navList}>
+                <li className={classes.navListItem}>
+                  <Link to="products" className={classes.navListItem_link}>
+                    Product
+                  </Link>
+                </li>
+                <li className={classes.navListItem}>
+                  <Link to="cart" className={classes.navListItem_link}>
+                    <Box className={classes.boxIconCart}>
+                      <IconButton
+                        size="large"
+                        aria-label="show 4 new mails"
+                        color="inherit"
+                      >
+                        <Badge badgeContent={countCart} color="error">
+                          <ShoppingCartIcon />
+                        </Badge>
+                      </IconButton>
+                    </Box>
+                  </Link>
+                </li>
+              </ul>
+            </Box>
+            {!isLogged && (
+              <Button color="inherit" onClick={handleClickOpen}>
+                Login
+              </Button>
+            )}
+
+            {isLogged && (
+              <IconButton
+                color="inherit"
+                title="Account settings"
+                onClick={handleClickMenu}
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
       <Menu
         anchorEl={anchorEl}
@@ -228,6 +274,8 @@ export default function Header() {
           )}
         </DialogContent>
       </Dialog>
+
+      {showCart ? <NotistackCart /> : ""}
     </Box>
   );
 }

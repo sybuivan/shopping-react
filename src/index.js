@@ -1,20 +1,15 @@
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import store from "./app/store";
-import { SnackbarProvider } from "notistack";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProductFeature from "./features/Product";
+import App from "./App";
+import store from "./app/store";
 import NotFound from "./components/NotFound";
-import ListPage from "./features/Product/pages/ListPage";
-import DetailProduct from "./features/Product/pages/DetailProduct";
-import ProductMenu from "./features/Product/components/ProductMenu";
-import ProductDesciption from "./features/Product/components/ProductDesciption";
-import ProductInformation from "./features/Product/components/ProductInformation";
-import ProductReview from "./features/Product/components/ProductReview";
+import CartFeature from "./features/Cart";
+import ProductFeature from "./features/Product";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,6 +22,7 @@ ReactDOM.render(
           <Routes>
             <Route path="/" element={<App />}>
               <Route path="products/*" element={<ProductFeature />} />
+              <Route path="cart" element={<CartFeature />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

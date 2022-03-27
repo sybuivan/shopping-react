@@ -15,7 +15,7 @@ import ProductSort from "../components/ProductSort";
 import SkeletonProductList from "../components/SkeletonProductList";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import FilterViewer from "../components/FilterViewer";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import queryString from 'query-string'
 
 const useStyles = makeStyles({
@@ -83,8 +83,6 @@ function ListPage(props) {
       isFreeShip: params.isFreeShip === 'true'
     }
   }, [location.search])
-
-  console.log('queryParams', queryParams)
   
 
   useEffect(() => {
@@ -200,7 +198,7 @@ function ListPage(props) {
               </Box>
 
               {loading ? (
-                <SkeletonProductList lenght={10} />
+                <SkeletonProductList lenght={12} />
               ) : (
                 <ProductList data={productList} />
               )}

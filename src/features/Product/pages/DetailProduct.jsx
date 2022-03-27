@@ -1,17 +1,25 @@
-import { CircularProgress, Container, Grid, LinearProgress, Paper } from "@mui/material";
+import {
+  Container,
+  Grid,
+  LinearProgress,
+  Paper
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
+import { useSnackbar } from "notistack";
 import React from "react";
-import ProductThumbnail from "../components/ProductThumbnail";
-import { useParams } from "react-router-dom";
-import useProductDetail from "../hooks/useProductDetail";
-import ProductInfo from "../components/ProductInfo";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { Outlet, Route, Routes, useParams } from "react-router-dom";
+import { addToCart, showMiniCart } from "../../Cart/cartSlice";
 import AddToCardForm from "../components/AddToCardForm";
-import ProductMenu from "../components/ProductMenu";
-import { Outlet, Routes, Route } from "react-router-dom";
 import ProductDesciption from "../components/ProductDesciption";
+import ProductInfo from "../components/ProductInfo";
 import ProductInformation from "../components/ProductInformation";
+import ProductMenu from "../components/ProductMenu";
 import ProductReview from "../components/ProductReview";
+import ProductThumbnail from "../components/ProductThumbnail";
+import useProductDetail from "../hooks/useProductDetail";
 
 const useStyles = makeStyles({
   left: {
@@ -29,17 +37,21 @@ const useStyles = makeStyles({
     margin: "auto",
   },
 
-  progress :{
-    position: 'fixed',
+  progress: {
+    position: "fixed",
     top: 0,
     left: 0,
-    width:'100%'
-  }
+    width: "100%",
+  },
 });
 
 function DetailProduct(props) {
   const classes = useStyles();
+  const navigate = useNavigate();
+
   const { productId } = useParams();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { product, loading } = useProductDetail(productId);
   if (loading) {
@@ -49,9 +61,16 @@ function DetailProduct(props) {
       </Box>
     );
   }
-  console.log(product);
-  const handleAddToCardForm = (formValue) => {
-    // console.log("Form value: ", formValue);
+
+  const handleAddToCardForm = ({ quantity }) => {
+    const action = addToCart({
+      id: productId,
+      product,
+      quantity,
+    });
+
+    dispatch(action);
+    dispatch(showMiniCart());
   };
   return (
     <Box>

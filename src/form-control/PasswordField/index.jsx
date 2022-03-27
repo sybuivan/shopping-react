@@ -1,7 +1,6 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { FormHelperText, OutlinedInput } from "@mui/material";
-import FilledInput from "@mui/material/FilledInput";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -10,7 +9,7 @@ import React, { useState } from "react";
 import { Controller } from "react-hook-form";
 
 function PasswordField(props) {
-  const { label, name, form ,errors, control} = props;
+  const { label, name ,errors, control} = props;
 
   const hasError = errors[name]
   // console.log('Has error', hasError);
