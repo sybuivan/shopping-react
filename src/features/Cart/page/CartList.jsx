@@ -35,7 +35,7 @@ function CartList({ cartList }) {
             <Button
               color="warning"
               variant="contained"
-              onClick={() => navigate("/products")}
+              onClick={() => navigate("/")}
             >
               Tiếp tục mua sắm
             </Button>

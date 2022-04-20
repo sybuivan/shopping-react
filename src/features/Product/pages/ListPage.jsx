@@ -16,7 +16,7 @@ import SkeletonProductList from "../components/SkeletonProductList";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import FilterViewer from "../components/FilterViewer";
 import { useLocation, useNavigate } from "react-router";
-import queryString from 'query-string'
+import queryString from "query-string";
 
 const useStyles = makeStyles({
   root: {},
@@ -57,7 +57,7 @@ function ListPage(props) {
   const [productList, setProductList] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [pagination, setPagination] = useState({
@@ -65,6 +65,7 @@ function ListPage(props) {
     total: 10,
     page: 1,
   });
+
   const [loading, setLoading] = useState(true);
   // const [filters, setFilters] = useState({
   //   _page: 1,
@@ -73,17 +74,16 @@ function ListPage(props) {
   // });
 
   const queryParams = useMemo(() => {
-    const params = queryString.parse(location.search)
+    const params = queryString.parse(location.search);
     return {
       ...params,
       _page: Number.parseInt(params._page) || 1,
       _limit: Number.parseInt(params._limit) || 12,
       _sort: params._sort || "salePrice:ASC",
-      isPromotion: params.isPromotion === 'true',
-      isFreeShip: params.isFreeShip === 'true'
-    }
-  }, [location.search])
-  
+      isPromotion: params.isPromotion === "true",
+      isFreeShip: params.isFreeShip === "true",
+    };
+  }, [location.search]);
 
   useEffect(() => {
     try {
@@ -109,8 +109,8 @@ function ListPage(props) {
     // setFilters
     const filters = {
       ...queryParams,
-      _page: page
-    }
+      _page: page,
+    };
     navigate({
       pathname: location.pathname,
       search: queryString.stringify(filters),
@@ -121,9 +121,9 @@ function ListPage(props) {
   const handleOnChangeSort = (newSortValue) => {
     const filters = {
       ...queryParams,
-      _sort: newSortValue
-    }
-    
+      _sort: newSortValue,
+    };
+
     navigate({
       pathname: location.pathname,
       search: queryString.stringify(filters),
@@ -134,9 +134,9 @@ function ListPage(props) {
   const handleFilterChange = (newFilters) => {
     const filters = {
       ...queryParams,
-      ...newFilters
-    }
-    
+      ...newFilters,
+    };
+
     navigate({
       pathname: location.pathname,
       search: queryString.stringify(filters),
@@ -166,7 +166,10 @@ function ListPage(props) {
         <Grid container spacing={2}>
           <Grid item className={classes.left}>
             <Paper elevation={0}>
-              <ProductFilters filters={queryParams} onChange={handleFilterChange} />
+              <ProductFilters
+                filters={queryParams}
+                onChange={handleFilterChange}
+              />
             </Paper>
           </Grid>
           <Grid item className={classes.right}>
@@ -176,10 +179,7 @@ function ListPage(props) {
                 onChange={handleOnChangeSort}
               />
 
-              <FilterViewer
-                onChange={setFiltersViewer}
-                filters={queryParams}
-              />
+              <FilterViewer onChange={setFiltersViewer} filters={queryParams} />
 
               <Box>
                 {productList.length === 0 ? (
